@@ -4,11 +4,11 @@ This is a short guide about how I make PDF slides using **beamer** format output
 
 ## What am I trying to do?
 
-We love to write note in markdown, but it is not a good candidate format for sharing. Frequently, we need to share a paper in two formate, one is for the editor to review and the other is for delivering on a conference. 
+We love to write note in markdown, but it is not a good candidate format for sharing. Frequently, we need to share a paper in two formate, one is for the editor to review and the other is for delivering on a conference.
 
 Is there a quick, easy way to release us from the tedious work of edit and convert documents?
 
-That is the starting point of this project. 
+That is the starting point of this project.
 
 ## 期待的工作流程
 
@@ -17,7 +17,6 @@ That is the starting point of this project.
   - 一个Beamer presentation
   - 一个PDF格式的正式文档
 
-
 ## 希望实现的一些细节
 
 - 在Markdown编写之中，对出现在beamer中的内容和出现在paper中的内容进行区分
@@ -25,6 +24,15 @@ That is the starting point of this project.
 - Beamer包含演讲者注释，方便进行演讲
 - 能够对beamer 的模板进行选择和替换
 - 能够对paper的模板进行选择和替换
+
+## 工作原理
+
+- lua filter对markdown文件中的内容进行区分，得到三种组合的编译目标所需要的内容
+  - 只有beamer的内容
+  - 以note形式展现的beamer+note的内容
+  - 以正常的文章的形式展示的内容
+- 在markdown文档之中通过在标题之中添加后缀来对内容进行标记
+- 
 
 ## Tools
 
@@ -54,7 +62,6 @@ sudo apt-get install imagemagick
 > `apt` will install pretty old version of Pandoc and some features will be missing. If you want latest version of this application, download latest package for your system from the project page: [https://github.com/jgm/pandoc/releases](https://github.com/jgm/pandoc/releases).
 > I use following `texlive` packages:
 
-
 ```sh
 sudo apt-get install texlive-latex-recommended
 sudo apt-get install texlive-fonts-recommended
@@ -65,7 +72,8 @@ sudo apt-get install texlive-xetex
 
 I recommend to use Pandoc of **2.10.x** or newer version for the creation of presentation because not all beamer features are supported in the Pandoc 1.x.
 
-## YAML Block for LaTex template
+## 
+    YAML Block for LaTex template
 
 This YAML block in the beginning of the MarkDown file defines parameters used by the Pandoc engine and relevant LaTex template parameters.
 
@@ -99,7 +107,6 @@ The same way as in [my pandoc for PDF project](https://github.com/alexeygumirov/
 ## Pandoc command
 
 > All Pandoc commands are for the Pandoc version 2.x.
-
 
 ```sh
 #!/usr/bin/sh
