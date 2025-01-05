@@ -37,7 +37,6 @@ toc: true
 
 Normal text.
 *Italic text* and **bold text**.
-~~Strike out~~ is supported.
 
 ## Notes
 
