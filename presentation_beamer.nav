@@ -1,0 +1,102 @@
+\headcommand {\slideentry {0}{0}{1}{1/1}{}{0}}
+\headcommand {\beamer@framepages {1}{1}}
+\headcommand {\beamer@sectionpages {1}{1}}
+\headcommand {\beamer@subsectionpages {1}{1}}
+\headcommand {\sectionentry {1}{一级标题}{2}{一级标题}{0}}
+\headcommand {\beamer@subsectionpages {2}{1}}
+\headcommand {\beamer@subsectionentry {0}{1}{1}{2}{二级标题}}
+\headcommand {\slideentry {1}{1}{1}{2/2}{二级标题}{0}}
+\headcommand {\beamer@framepages {2}{2}}
+\headcommand {\beamer@sectionpages {2}{3}}
+\headcommand {\beamer@subsectionpages {2}{3}}
+\headcommand {\sectionentry {2}{介绍}{4}{介绍}{0}}
+\headcommand {\beamer@subsectionpages {4}{3}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{4}{Themes, fonts, etc.}}
+\headcommand {\slideentry {2}{1}{1}{4/4}{Themes, fonts, etc.}{0}}
+\headcommand {\beamer@framepages {4}{4}}
+\headcommand {\slideentry {2}{1}{2}{5/5}{Themes, fonts, etc.}{0}}
+\headcommand {\beamer@framepages {5}{5}}
+\headcommand {\beamer@subsectionpages {4}{5}}
+\headcommand {\beamer@subsectionentry {0}{2}{2}{6}{Links}}
+\headcommand {\slideentry {2}{2}{1}{6/6}{Links}{0}}
+\headcommand {\beamer@framepages {6}{6}}
+\headcommand {\beamer@sectionpages {4}{6}}
+\headcommand {\beamer@subsectionpages {6}{6}}
+\headcommand {\sectionentry {3}{Formatting}{7}{Formatting}{0}}
+\headcommand {\beamer@subsectionpages {7}{6}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{7}{Text formatting}}
+\headcommand {\slideentry {3}{1}{1}{7/7}{Text formatting}{0}}
+\headcommand {\beamer@framepages {7}{7}}
+\headcommand {\beamer@subsectionpages {7}{7}}
+\headcommand {\beamer@subsectionentry {0}{3}{2}{8}{Notes}}
+\headcommand {\slideentry {3}{2}{1}{8/8}{Notes}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\slideentry {3}{2}{2}{9/9}{Notes}{0}}
+\headcommand {\beamer@framepages {9}{9}}
+\headcommand {\beamer@subsectionpages {8}{9}}
+\headcommand {\beamer@subsectionentry {0}{3}{3}{10}{Blocks}}
+\headcommand {\slideentry {3}{3}{1}{10/10}{Blocks}{0}}
+\headcommand {\beamer@framepages {10}{10}}
+\headcommand {\slideentry {3}{3}{2}{11/11}{Blocks}{0}}
+\headcommand {\beamer@framepages {11}{11}}
+\headcommand {\beamer@subsectionpages {10}{11}}
+\headcommand {\beamer@subsectionentry {0}{3}{4}{12}{Listings}}
+\headcommand {\slideentry {3}{4}{1}{12/12}{Listings}{0}}
+\headcommand {\beamer@framepages {12}{12}}
+\headcommand {\slideentry {3}{4}{2}{13/13}{Listings}{0}}
+\headcommand {\beamer@framepages {13}{13}}
+\headcommand {\slideentry {3}{4}{3}{14/14}{Listings}{0}}
+\headcommand {\beamer@framepages {14}{14}}
+\headcommand {\beamer@subsectionpages {12}{14}}
+\headcommand {\beamer@subsectionentry {0}{3}{5}{15}{Table}}
+\headcommand {\slideentry {3}{5}{1}{15/15}{Table}{0}}
+\headcommand {\beamer@framepages {15}{15}}
+\headcommand {\beamer@subsectionpages {15}{15}}
+\headcommand {\beamer@subsectionentry {0}{3}{6}{16}{Single picture}}
+\headcommand {\slideentry {3}{6}{1}{16/16}{Single picture}{0}}
+\headcommand {\beamer@framepages {16}{16}}
+\headcommand {\beamer@subsectionpages {16}{16}}
+\headcommand {\beamer@subsectionentry {0}{3}{7}{17}{Two or more pictures in a raw}}
+\headcommand {\slideentry {3}{7}{1}{17/17}{Two or more pictures in a raw}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\beamer@subsectionpages {17}{17}}
+\headcommand {\beamer@subsectionentry {0}{3}{8}{18}{Lists}}
+\headcommand {\slideentry {3}{8}{1}{18/18}{Lists}{0}}
+\headcommand {\beamer@framepages {18}{18}}
+\headcommand {\beamer@subsectionpages {18}{18}}
+\headcommand {\beamer@subsectionentry {0}{3}{9}{19}{Two columns of equal width}}
+\headcommand {\slideentry {3}{9}{1}{19/19}{Two columns of equal width}{0}}
+\headcommand {\beamer@framepages {19}{19}}
+\headcommand {\beamer@subsectionpages {19}{19}}
+\headcommand {\beamer@subsectionentry {0}{3}{10}{20}{Two columns of with 40:60 split}}
+\headcommand {\slideentry {3}{10}{1}{20/20}{Two columns of with 40:60 split}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\beamer@subsectionpages {20}{20}}
+\headcommand {\beamer@subsectionentry {0}{3}{11}{21}{Three columns with equal split}}
+\headcommand {\slideentry {3}{11}{1}{21/21}{Three columns with equal split}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\beamer@subsectionpages {21}{21}}
+\headcommand {\beamer@subsectionentry {0}{3}{12}{22}{Three columns with 30:40:30 split}}
+\headcommand {\slideentry {3}{12}{1}{22/22}{Three columns with 30:40:30 split}{0}}
+\headcommand {\beamer@framepages {22}{22}}
+\headcommand {\beamer@subsectionpages {22}{22}}
+\headcommand {\beamer@subsectionentry {0}{3}{13}{23}{Two columns: image and text}}
+\headcommand {\slideentry {3}{13}{1}{23/23}{Two columns: image and text}{0}}
+\headcommand {\beamer@framepages {23}{23}}
+\headcommand {\beamer@subsectionpages {23}{23}}
+\headcommand {\beamer@subsectionentry {0}{3}{14}{24}{Two columns: image and table beamer}}
+\headcommand {\slideentry {3}{14}{1}{24/24}{Two columns: image and table beamer}{0}}
+\headcommand {\beamer@framepages {24}{24}}
+\headcommand {\beamer@subsectionpages {24}{24}}
+\headcommand {\beamer@subsectionentry {0}{3}{15}{25}{Fancy layout}}
+\headcommand {\slideentry {3}{15}{1}{25/25}{Fancy layout}{0}}
+\headcommand {\beamer@framepages {25}{25}}
+\headcommand {\slideentry {3}{15}{2}{26/26}{Fancy layout}{0}}
+\headcommand {\beamer@framepages {26}{26}}
+\headcommand {\slideentry {3}{15}{3}{27/27}{Fancy layout}{0}}
+\headcommand {\beamer@framepages {27}{27}}
+\headcommand {\beamer@partpages {1}{27}}
+\headcommand {\beamer@subsectionpages {25}{27}}
+\headcommand {\beamer@sectionpages {7}{27}}
+\headcommand {\beamer@documentpages {27}}
+\headcommand {\gdef \inserttotalframenumber {26}}

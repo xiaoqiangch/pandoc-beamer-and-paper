@@ -13,11 +13,12 @@ That is the starting point of this project.
 ## 期待的工作流程
 
 - 所有的文档编辑工作都是用markdown语言完成
+- 在进行编辑的时候，可以用简单的符号来标记一下，确认哪些内容会出现在最后的论文之中，哪些内容会出现在beamer中
 - 通过调用pandoc进行文档转换和编译，得到
-  - 一个Beamer presentation
-  - 一个PDF格式的正式文档
+  - Beamer presentation
+  - PDF格式的正式文档
 
-## 希望实现的一些细节
+## 需要实现的功能
 
 - 在Markdown编写之中，对出现在beamer中的内容和出现在paper中的内容进行区分
   - 这些内容经过转换和编译之后，会分别出现在对应的文档之中
@@ -70,9 +71,11 @@ sudo apt-get install texlive-fonts-extra
 sudo apt-get install texlive-xetex
 ```
 
+
+
+
 I recommend to use Pandoc of **2.10.x** or newer version for the creation of presentation because not all beamer features are supported in the Pandoc 1.x.
 
-## 
     YAML Block for LaTex template
 
 This YAML block in the beginning of the MarkDown file defines parameters used by the Pandoc engine and relevant LaTex template parameters.
