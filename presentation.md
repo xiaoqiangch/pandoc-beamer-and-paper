@@ -79,7 +79,7 @@ echo "Hello world!"
 echo "line"
 ```
 
-## Table
+## Table beamer
 
 **Item** | **Description** | **Q-ty**
 :--------|-----------------:|:---:
@@ -268,7 +268,7 @@ List from the right column:
 
 :::
 
-## Fancy layout
+## Fancy layout beamer
 
 ### Proposal
 
