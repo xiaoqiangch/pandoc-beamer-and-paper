@@ -1,9 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
 # 获取当前日期
 DATE_COVER=$(date "+%d %B %Y")
 
-# 定义源格式
 SOURCE_FORMAT="markdown_strict+pipe_tables+backtick_code_blocks+auto_identifiers+strikeout+yaml_metadata_block+implicit_figures+all_symbols_escapable+link_attributes+smart+fenced_divs"
 
 

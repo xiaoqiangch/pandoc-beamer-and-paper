@@ -282,11 +282,10 @@ $if(links-as-notes)$
 % Make links footnotes instead of hotlinks:
 \DeclareRobustCommand{\href}[2]{#2\footnote{\url{#1}}}
 $endif$
-$if(strikeout)$
 \usepackage[normalem]{ulem}
+\newcommand{\st}[1]{\sout{#1}}
 % Avoid problems with \sout in headers with hyperref
 \pdfstringdefDisableCommands{\renewcommand{\sout}{}}
-$endif$
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}

@@ -1,85 +1,63 @@
 ---
-title: "一次输入，多重输出"
-author: "CHEN,Xiaoqiang(陈孝强)"
-institute: "粑粑柑共同体"
-topic: "以MD为中心的写作和交流"
+title: "My wonderful presentation"
+author: "Alexey Gumirov"
+institute: "My home office"
+topic: "Pandoc how-to"
+theme: "Frankfurt"
+colortheme: "beaver"
+fonttheme: "professionalfonts"
+mainfont: "STSong"
+CJKmainfont: "STSong"
 fontsize: 11pt
 urlcolor: red
 linkstyle: bold
-date: 2024-01-01
+aspectratio: 169
+titlegraphic: img/aleph0.png
+logo: img/aleph0-small.png
+date:
+section-titles: false
 toc: true
-beamer:
-  theme: "Frankfurt"
-  colortheme: "beaver"
-  fonttheme: "professionalfonts"
-  aspectratio: 169
-  titlegraphic: "img/aleph0.png"
-  logo: "img/aleph0-small.png"
-  section-titles: true
-article:
-  geometry: "a4paper,margin=2cm"
-  fontsize: 12pt
-  linestretch: 1.5
 ---
 
-# 一级标题
+# General information beamer
 
-## 二级标题
-
-### 这是一个幻灯片
-
-- 阿福水电费水电费
--  阿娇事件发生
-
-# 介绍 
-
-## Themes, fonts, etc. 
+## Themes, fonts, etc. beamer
 
 - I use default **pandoc** themes.
 - This presentation is made with **Frankfurt** theme and **beaver** color theme.
-- I like **professionalfonts** font scheme.
+- I like **professionalfonts** font scheme. 
 
-### b三级标题 beamer
-
-- 这是一个三级标题大短发短发
--  发似懂非懂 
-
-
-## Links 
+## Links beamer
 
 - Matrix of beamer themes: [https://hartwork.org/beamer-theme-matrix/](https://hartwork.org/beamer-theme-matrix/)
 - Font themes: [http://www.deic.uab.es/~iblanes/beamer_gallery/index_by_font.html](http://www.deic.uab.es/~iblanes/beamer_gallery/index_by_font.html)
 - Nerd Fonts: [https://nerdfonts.com](https://nerdfonts.com)
 
-# Formatting 
-
-## Text formatting 
+# Formatting beamer
+## Text formatting beamer
 
 Normal text.
 *Italic text* and **bold text**.
+~~Strike out~~ is supported.
 
-## Notes 
+## Notes beamer
 
 > This is a note.
->
->> Nested notes are not supported.
->> And it continues.
->>
-
-### b又有一个三级标题 beamer
-- 有些内容
-- 又有戏额内容
+> > Nested notes are not supported.
+> And it continues.
 
 ## Blocks
 
-### bThis is a block A beamer
+### This is a block A
 
 - Line A
 - Line B
 
+### 
+
 New block without header.
 
-### bThis is a block B. beamer
+### This is a block B. beamer
 
 - Line C
 - Line D
@@ -93,33 +71,23 @@ Listings out of the block.
 echo "Hello world!"
 echo "line"
 ```
-
-### bListings in the block. beamer
+### Listings in the block. beamer
 
 ```sh
 #!/bin/bash
 echo "Hello world!"
 echo "line"
 ```
-### b test frame beamer
-- A
-- B
 
+## Table beamer
 
-## Table
+**Item** | **Description** | **Q-ty**
+:--------|-----------------:|:---:
+Item A | Item A description | 2
+Item B | Item B description | 5
+Item C | N/A | 100
 
-
-### b test frame beamer
-- Caption
-- Description
-
-| **Item** | **Description** | **Q-ty** |
-| :------------- | --------------------: | :------------: |
-| Item A         |    Item A description |       2       |
-| Item B         |    Item B description |       5       |
-| Item C         |                   N/A |      100      |
-
-## Single picture
+## Single picture 
 
 This is how we insert picture. Caption is produced automatically from the alt text.
 
@@ -127,12 +95,13 @@ This is how we insert picture. Caption is produced automatically from the alt te
 ![Aleph 0](img/aleph0.png) 
 ```
 
-![Aleph 0](img/aleph0.png)
+![Aleph 0](img/aleph0.png) 
 
 ## Two or more pictures in a raw
 
 Here are two pictures in the raw. We can also change two pictures size (height or width).
 
+###
 ```
 ![](img/aleph0.png){height=10%}\ ![](img/aleph0.png){height=30%} 
 ```
@@ -143,9 +112,10 @@ Here are two pictures in the raw. We can also change two pictures size (height o
 
 1. Idea 1
 2. Idea 2
-   - genius idea A
-   - more genius 2
+	- genius idea A
+	- more genius 2
 3. Conclusion
+
 
 ## Two columns of equal width
 
@@ -267,7 +237,7 @@ Right column list:
 
 :::: column
 
-Text in the right column.
+Text in the right column.  
 
 List from the right column:
 
@@ -277,7 +247,7 @@ List from the right column:
 
 :::
 
-## Two columns: image and table beamer
+## Two columns: image and table
 
 ::: columns
 
@@ -290,21 +260,26 @@ List from the right column:
 :::: column
 
 | **Item** | **Option** |
-| :------------- | :--------------: |
-| Item 1         |     Option 1     |
-| Item 2         |     Option 2     |
+|:---------|:----------:|
+| Item 1   | Option 1   |
+| Item 2   | Option 2   |
 
 ::::
 
 :::
 
-## Fancy layout
+## Fancy layout beamer
 
-### bProposal beamer
+### Proposal
+
+- Point A
+- Point B
 
 ::: columns
 
 :::: column
+
+### Pros
 
 - Good
 - Better
@@ -314,20 +289,15 @@ List from the right column:
 
 :::: column
 
-- Point A
-- Point B
-
-::::
-
-:::
-
 ### Cons beamer
 
 - Bad
 - Worse
 - Worst
 
+::::
 
+:::
 
 ### Conclusion beamer
 
