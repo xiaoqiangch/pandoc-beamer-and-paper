@@ -6,7 +6,8 @@ topic: "Pandoc how-to"
 theme: "Frankfurt"
 colortheme: "beaver"
 fonttheme: "professionalfonts"
-mainfont: "Hack Nerd Font"
+mainfont: "STSong"
+CJKmainfont: "STSong"
 fontsize: 11pt
 urlcolor: red
 linkstyle: bold
@@ -18,28 +19,28 @@ section-titles: false
 toc: true
 ---
 
-# General information
+# General information beamer
 
-## Themes, fonts, etc.
+## Themes, fonts, etc. beamer
 
 - I use default **pandoc** themes.
 - This presentation is made with **Frankfurt** theme and **beaver** color theme.
 - I like **professionalfonts** font scheme. 
 
-## Links
+## Links beamer
 
 - Matrix of beamer themes: [https://hartwork.org/beamer-theme-matrix/](https://hartwork.org/beamer-theme-matrix/)
 - Font themes: [http://www.deic.uab.es/~iblanes/beamer_gallery/index_by_font.html](http://www.deic.uab.es/~iblanes/beamer_gallery/index_by_font.html)
 - Nerd Fonts: [https://nerdfonts.com](https://nerdfonts.com)
 
-# Formatting
-## Text formatting
+# Formatting beamer
+## Text formatting beamer
 
 Normal text.
 *Italic text* and **bold text**.
 ~~Strike out~~ is supported.
 
-## Notes
+## Notes beamer
 
 > This is a note.
 > > Nested notes are not supported.
@@ -56,7 +57,7 @@ Normal text.
 
 New block without header.
 
-### This is a block B.
+### This is a block B. beamer
 
 - Line C
 - Line D
@@ -70,7 +71,7 @@ Listings out of the block.
 echo "Hello world!"
 echo "line"
 ```
-### Listings in the block.
+### Listings in the block. beamer
 
 ```sh
 #!/bin/bash
@@ -288,7 +289,7 @@ List from the right column:
 
 :::: column
 
-### Cons
+### Cons beamer
 
 - Bad
 - Worse
@@ -298,7 +299,7 @@ List from the right column:
 
 :::
 
-### Conclusion
+### Conclusion beamer
 
 - Let's go for it!
 - No way we go for it!
