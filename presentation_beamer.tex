@@ -1,27 +1,59 @@
 % Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
-\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
 \documentclass[
-  11pt,
+  ignorenonframetext,
+  aspectratio=169,
   aspectratio=169]{beamer}
-\usepackage{xcolor}
-\usepackage{amsmath,amssymb}
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
-\usepackage{iftex}
-\ifPDFTeX
+\usepackage{pgfpages}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\setmainfont{STHeiti}
+\setsansfont{STHeiti} % 设置无衬线字体
+\setmonofont{STHeiti}
+\setCJKmainfont{STHeiti}  % 使用华文黑体作为中文字体
+\setCJKsansfont{STHeiti}
+\setCJKmonofont{STHeiti}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{grffile} 
+
+% 定义 \tightlist 命令
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% 定义 \pandocbounded 命令
+\newcommand{\pandocbounded}[1]{#1}
+
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+
+% Generate Table of Contents
+\AtBeginSection[]{
+  \begin{frame}
+    \frametitle{Table of Contents}
+    \setcounter{tocdepth}{2}
+    \tableofcontents[currentsection,currentsubsection,hideothersubsections]
+  \end{frame}
+}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math} % this also loads fontspec
+  \usepackage{unicode-math}
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
-\usepackage{lmodern}
-\ifPDFTeX\else
-  % xetex/luatex font selection
-\fi
+\usetheme[]{Frankfurt}
+\usecolortheme{beaver}
+\usefonttheme{professionalfonts}
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \IfFileExists{microtype.sty}{% use microtype if available
@@ -38,153 +70,117 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
+\usepackage{xcolor}
+\definecolor{blanchedalmond}{rgb}{1.0, 0.92, 0.8}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={My wonderful presentation},
+  pdfauthor={Alexey Gumirov},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\newif\ifbibliography
 \usepackage{listings}
 \newcommand{\passthrough}[1]{#1}
-\lstset{defaultdialect=[5.3]Lua}
-\lstset{defaultdialect=[x86masm]Assembler}
-\usepackage{longtable,booktabs,array}
-\usepackage{calc} % for calculating minipage widths
+\lstset{defaultdialect=sh}
+\lstset{framexleftmargin=0mm, frame=trBL,backgroundcolor=\color{blanchedalmond!5},numbers=left,numberstyle=\scriptsize,basicstyle=\small}
+\lstset{aboveskip=5mm,belowskip=5mm,xleftmargin=20pt,xrightmargin=5pt}
+% \lstset{prebreak={\raisebox{0ex}[0ex][0ex]}}
+% \lstset{postbreak={\raisebox{0ex}[0ex][0ex]\space}}
+\lstset{breaklines=true,breakatwhitespace=true}
+\usepackage{longtable,booktabs}
 \usepackage{caption}
 % Make caption package work with longtable
 \makeatletter
 \def\fnum@table{\tablename~\thetable}
 \makeatother
-\usepackage{graphicx}
+\usepackage{graphicx,grffile}
 \makeatletter
-\newsavebox\pandoc@box
-\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
-  \sbox\pandoc@box{#1}%
-  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
-  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
-  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
-  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
-  \else\usebox{\pandoc@box}%
-  \fi%
-}
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 % Set default figure placement to htbp
+\makeatletter
 \def\fps@figure{htbp}
 \makeatother
+\usepackage[normalem]{ulem}
+\newcommand{\st}[1]{\sout{#1}}
+% Avoid problems with \sout in headers with hyperref
+\pdfstringdefDisableCommands{\renewcommand{\sout}{}}
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\usepackage{xeCJK}
-\setCJKmainfont{STSong}
-\setCJKsansfont{STHeiti}
-\setCJKmonofont{STFangsong}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
 
-%%%%%%%%%%%%%color 
-\definecolor{UBCblue}{rgb}{0.04706, 0.13725, 0.26667} % UBC Blue (primary)
-\definecolor{UBCgrey}{rgb}{0.3686, 0.5255, 0.6235} % UBC Grey (secondary)
+%
+% When using babel or polyglossia with biblatex, loading csquotes is recommended 
+% to ensure that quoted texts are typeset according to the rules of your main language.
+%
+\usepackage{csquotes}
 
-\definecolor{orange}{RGB}{244,167,66}
+%
+% blockquote
+%
+\definecolor{blockquote-border}{RGB}{221,221,221}
+\definecolor{blockquote-text}{RGB}{89,89,89}
+\usepackage{mdframed}
+\newmdenv[rightline=false,bottomline=false,topline=false,linewidth=3pt,linecolor=blockquote-border,skipabove=\parskip]{customblockquote}
+\renewenvironment{quote}{\begin{customblockquote}\list{}{\rightmargin=0em\leftmargin=0em}%
+\item\relax\color{blockquote-text}\ignorespaces}{\unskip\unskip\endlist\end{customblockquote}}
 
-\setbeamercolor{palette primary}{bg=UBCblue,fg=white}
-\setbeamercolor{palette secondary}{bg=UBCblue,fg=white}
-\setbeamercolor{palette tertiary}{bg=UBCblue,fg=white}
-\setbeamercolor{palette quaternary}{bg=UBCblue,fg=white}
-\setbeamercolor{structure}{fg=UBCblue} % itemize, enumerate, etc
-\setbeamercolor{section in toc}{fg=UBCblue} % TOC sections
+%
+% Source Sans Pro as the de­fault font fam­ily
+% Source Code Pro for monospace text
+%
+% 'default' option sets the default 
+% font family to Source Sans Pro, not \sfdefault.
+%
+\usepackage[default]{sourcesanspro}
+\usepackage{sourcecodepro}
 
-%% change circle miniframes color
-\setbeamercolor{mini frame}{fg=orange, bg=UBCblue}
-
-%% Change subsection in footer color (author and institute color)
-\setbeamercolor{subsection in head/foot}{bg=UBCgrey,fg=white}
-
-%change ilmenau section dot color 
-\setbeamercolor{section in head/foot}{fg=orange} 
-
-%% Change the circle in miniframes to a box
-%\setbeamertemplate{mini frame}[box]
-%\setbeamertemplate{mini frame in current subsection}[box]
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% Create framenumber in footer
-\newcommand{\frameofframes}{/}
-\newcommand{\setframeofframes}[1]{\renewcommand{\frameofframes}{#1}}
-
-\setframeofframes{of}
+% XeLaTeX specific adjustments for straight quotes: https://tex.stackexchange.com/a/354887
+% This issue is already fixed (see https://github.com/silkeh/latex-sourcecodepro/pull/5) but the 
+% fix is still unreleased.
+% TODO: Remove this workaround when the new version of sourcecodepro is reelased on CTAN.
+\ifxetex
 \makeatletter
-\setbeamertemplate{footline}
-  {%
-    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
-    \end{beamercolorbox}
-    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
-      leftskip=.3cm,rightskip=.3cm plus1fil]{author in head/foot}%
-      \leavevmode{\usebeamerfont{author in head/foot}\insertshortauthor}%
-      \hfill%
-      {\usebeamerfont{institute in head/foot}\usebeamercolor[fg]{institute in head/foot}\insertshortinstitute}%
-    \end{beamercolorbox}%
-    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
-      leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
-      {\usebeamerfont{title in head/foot}\insertshorttitle}%
-      \hfill%
-      {\usebeamerfont{frame number}\usebeamercolor[fg]{frame number}\insertframenumber~\frameofframes~\inserttotalframenumber}
-    \end{beamercolorbox}%
-    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}
-    \end{beamercolorbox}
-  }
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Remove subsection bar in mini frames
-\defbeamertemplate*{headline}{miniframes theme no subsection}
-{%
-  \begin{beamercolorbox}[colsep=1.5pt]{upper separation line head}
-  \end{beamercolorbox}
-  \begin{beamercolorbox}{section in head/foot}
-    \vskip2pt\insertnavigation{\paperwidth}\vskip2pt
-  \end{beamercolorbox}%
-  \begin{beamercolorbox}[colsep=1.5pt]{lower separation line head}
-  \end{beamercolorbox}
-}
-
-\setbeamertemplate{footline}[miniframes theme no subsection]
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\defaultfontfeatures[\ttfamily]
+  { Numbers   = \sourcecodepro@figurestyle,
+    Scale     = \SourceCodePro@scale,
+    Extension = .otf }
+\setmonofont
+  [ UprightFont    = *-\sourcecodepro@regstyle,
+    ItalicFont     = *-\sourcecodepro@regstyle It,
+    BoldFont       = *-\sourcecodepro@boldstyle,
+    BoldItalicFont = *-\sourcecodepro@boldstyle It ]
+  {SourceCodePro}
 \makeatother
-\usepackage{bookmark}
-\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same}
-\hypersetup{
-  pdftitle={一次输入，多重输出},
-  pdfauthor={CHEN,Xiaoqiang(陈孝强)},
-  colorlinks=true,
-  linkcolor={Maroon},
-  filecolor={Maroon},
-  citecolor={Blue},
-  urlcolor={red},
-  pdfcreator={LaTeX via pandoc}}
+\fi
 
-\title{一次输入，多重输出}
-\author{CHEN,Xiaoqiang(陈孝强)}
-\date{05 一月 2025}
+
+\title{My wonderful presentation}
+\author{Alexey Gumirov}
+\date{07 一月 2025}
+\institute{My home office}
+\titlegraphic{\includegraphics{img/aleph0.png}}
+\logo{\includegraphics{img/aleph0-small.png}}
 
 \begin{document}
-\maketitle
+\frame{\titlepage}
 
-{
-\hypersetup{linkcolor=}
-\setcounter{tocdepth}{3}
-\tableofcontents
-}
-\section{一级标题}\label{ux4e00ux7ea7ux6807ux9898}
-
-\subsection{二级标题}\label{ux4e8cux7ea7ux6807ux9898}
-
-\begin{frame}{这是一个幻灯片}
-\phantomsection\label{ux8fd9ux662fux4e00ux4e2aux5e7bux706fux7247}
-\begin{itemize}
-\tightlist
-\item
-  阿福水电费水电费
-\item
-  阿娇事件发生
-\end{itemize}
+\begin{frame}
+  \tableofcontents[hideallsubsections]
 \end{frame}
+\section{General information beamer}\label{general-information-beamer}
 
-\section{介绍}\label{ux4ecbux7ecd}
+\subsection{Themes, fonts, etc. beamer}\label{themes-fonts-etc.-beamer}
 
-\subsection{Themes, fonts, etc.}\label{themes-fonts-etc.}
-
-\begin{frame}{Themes, fonts, etc.}
+\begin{frame}{Themes, fonts, etc. beamer}
 \begin{itemize}
 \tightlist
 \item
@@ -197,20 +193,9 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{b三级标题 beamer}
-\phantomsection\label{bux4e09ux7ea7ux6807ux9898-beamer}
-\begin{itemize}
-\tightlist
-\item
-  这是一个三级标题大短发短发
-\item
-  发似懂非懂
-\end{itemize}
-\end{frame}
+\subsection{Links beamer}\label{links-beamer}
 
-\subsection{Links}\label{links}
-
-\begin{frame}{Links}
+\begin{frame}{Links beamer}
 \begin{itemize}
 \tightlist
 \item
@@ -224,17 +209,18 @@
 \end{itemize}
 \end{frame}
 
-\section{Formatting}\label{formatting}
+\section{Formatting beamer}\label{formatting-beamer}
 
-\subsection{Text formatting}\label{text-formatting}
+\subsection{Text formatting beamer}\label{text-formatting-beamer}
 
-\begin{frame}{Text formatting}
-Normal text. \emph{Italic text} and \textbf{bold text}.
+\begin{frame}{Text formatting beamer}
+Normal text. \emph{Italic text} and \textbf{bold text}. \st{Strike out}
+is supported.
 \end{frame}
 
-\subsection{Notes}\label{notes}
+\subsection{Notes beamer}\label{notes-beamer}
 
-\begin{frame}{Notes}
+\begin{frame}{Notes beamer}
 \begin{quote}
 This is a note.
 
@@ -244,21 +230,10 @@ Nested notes are not supported. And it continues.
 \end{quote}
 \end{frame}
 
-\begin{frame}{b又有一个三级标题 beamer}
-\phantomsection\label{bux53c8ux6709ux4e00ux4e2aux4e09ux7ea7ux6807ux9898-beamer}
-\begin{itemize}
-\tightlist
-\item
-  有些内容
-\item
-  又有戏额内容
-\end{itemize}
-\end{frame}
-
 \subsection{Blocks}\label{blocks}
 
-\begin{frame}{bThis is a block A beamer}
-\phantomsection\label{bthis-is-a-block-a-beamer}
+\begin{frame}{This is a block A}
+\phantomsection\label{this-is-a-block-a}
 \begin{itemize}
 \tightlist
 \item
@@ -266,12 +241,15 @@ Nested notes are not supported. And it continues.
 \item
   Line B
 \end{itemize}
+\end{frame}
 
+\begin{frame}{}
+\phantomsection\label{section}
 New block without header.
 \end{frame}
 
-\begin{frame}{bThis is a block B. beamer}
-\phantomsection\label{bthis-is-a-block-b.-beamer}
+\begin{frame}{This is a block B. beamer}
+\phantomsection\label{this-is-a-block-b.-beamer}
 \begin{itemize}
 \tightlist
 \item
@@ -293,8 +271,8 @@ echo "line"
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}[fragile]{bListings in the block. beamer}
-\phantomsection\label{blistings-in-the-block.-beamer}
+\begin{frame}[fragile]{Listings in the block. beamer}
+\phantomsection\label{listings-in-the-block.-beamer}
 \begin{lstlisting}[language=sh]
 #!/bin/bash
 echo "Hello world!"
@@ -302,29 +280,9 @@ echo "line"
 \end{lstlisting}
 \end{frame}
 
-\begin{frame}{b test frame beamer}
-\phantomsection\label{b-test-frame-beamer}
-\begin{itemize}
-\tightlist
-\item
-  A
-\item
-  B
-\end{itemize}
-\end{frame}
+\subsection{Table beamer}\label{table-beamer}
 
-\subsection{Table}\label{table}
-
-\begin{frame}{b test frame beamer}
-\phantomsection\label{b-test-frame-beamer-1}
-\begin{itemize}
-\tightlist
-\item
-  Caption
-\item
-  Description
-\end{itemize}
-
+\begin{frame}{Table beamer}
 \begin{longtable}[]{@{}lrc@{}}
 \toprule\noalign{}
 \textbf{Item} & \textbf{Description} & \textbf{Q-ty} \\
@@ -349,7 +307,7 @@ the alt text.
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{img/aleph0.png}}
+\includegraphics{img/aleph0.png}
 \caption{Aleph 0}
 \end{figure}
 \end{frame}
@@ -357,15 +315,18 @@ the alt text.
 \subsection{Two or more pictures in a
 raw}\label{two-or-more-pictures-in-a-raw}
 
-\begin{frame}[fragile]{Two or more pictures in a raw}
+\begin{frame}{Two or more pictures in a raw}
 Here are two pictures in the raw. We can also change two pictures size
 (height or width).
+\end{frame}
 
+\begin{frame}[fragile]{}
+\phantomsection\label{section-1}
 \begin{lstlisting}
 ![](img/aleph0.png){height=10%}\ ![](img/aleph0.png){height=30%} 
 \end{lstlisting}
 
-\includegraphics[width=\linewidth,height=0.1\textheight,keepaspectratio]{img/aleph0.png}~\includegraphics[width=\linewidth,height=0.3\textheight,keepaspectratio]{img/aleph0.png}
+\includegraphics[width=\textwidth,height=0.1\textheight]{img/aleph0.png}~\includegraphics[width=\textwidth,height=0.3\textheight]{img/aleph0.png}
 \end{frame}
 
 \subsection{Lists}\label{lists}
@@ -395,13 +356,13 @@ width}\label{two-columns-of-equal-width}
 
 \begin{frame}{Two columns of equal width}
 \begin{columns}[T]
-\begin{column}{0.48\linewidth}
+\begin{column}{0.48\textwidth}
 Left column text.
 
 Another text line.
 \end{column}
 
-\begin{column}{0.48\linewidth}
+\begin{column}{0.48\textwidth}
 \begin{itemize}
 \tightlist
 \item
@@ -420,13 +381,13 @@ split}\label{two-columns-of-with-4060-split}
 
 \begin{frame}{Two columns of with 40:60 split}
 \begin{columns}[T]
-\begin{column}{0.4\linewidth}
+\begin{column}{0.4\textwidth}
 Left column text.
 
 Another text line.
 \end{column}
 
-\begin{column}{0.6\linewidth}
+\begin{column}{0.6\textwidth}
 \begin{itemize}
 \tightlist
 \item
@@ -445,13 +406,13 @@ split}\label{three-columns-with-equal-split}
 
 \begin{frame}{Three columns with equal split}
 \begin{columns}[T]
-\begin{column}{0.48\linewidth}
+\begin{column}{0.48\textwidth}
 Left column text.
 
 Another text line.
 \end{column}
 
-\begin{column}{0.48\linewidth}
+\begin{column}{0.48\textwidth}
 Middle column list:
 
 \begin{enumerate}
@@ -463,7 +424,7 @@ Middle column list:
 \end{enumerate}
 \end{column}
 
-\begin{column}{0.48\linewidth}
+\begin{column}{0.48\textwidth}
 Right column list:
 
 \begin{itemize}
@@ -482,13 +443,13 @@ split}\label{three-columns-with-304030-split}
 
 \begin{frame}{Three columns with 30:40:30 split}
 \begin{columns}[T]
-\begin{column}{0.3\linewidth}
+\begin{column}{0.3\textwidth}
 Left column text.
 
 Another text line.
 \end{column}
 
-\begin{column}{0.4\linewidth}
+\begin{column}{0.4\textwidth}
 Middle column list:
 
 \begin{enumerate}
@@ -500,7 +461,7 @@ Middle column list:
 \end{enumerate}
 \end{column}
 
-\begin{column}{0.3\linewidth}
+\begin{column}{0.3\textwidth}
 Right column list:
 
 \begin{itemize}
@@ -519,11 +480,11 @@ text}\label{two-columns-image-and-text}
 
 \begin{frame}{Two columns: image and text}
 \begin{columns}[T]
-\begin{column}{0.48\linewidth}
-\includegraphics[width=\linewidth,height=0.5\textheight,keepaspectratio]{img/aleph0.png}
+\begin{column}{0.48\textwidth}
+\includegraphics[width=\textwidth,height=0.5\textheight]{img/aleph0.png}
 \end{column}
 
-\begin{column}{0.48\linewidth}
+\begin{column}{0.48\textwidth}
 Text in the right column.
 
 List from the right column:
@@ -539,16 +500,16 @@ List from the right column:
 \end{columns}
 \end{frame}
 
-\subsection{Two columns: image and table
-beamer}\label{two-columns-image-and-table-beamer}
+\subsection{Two columns: image and
+table}\label{two-columns-image-and-table}
 
-\begin{frame}{Two columns: image and table beamer}
+\begin{frame}{Two columns: image and table}
 \begin{columns}[T]
-\begin{column}{0.48\linewidth}
-\includegraphics[width=\linewidth,height=0.5\textheight,keepaspectratio]{img/aleph0.png}
+\begin{column}{0.48\textwidth}
+\includegraphics[width=\textwidth,height=0.5\textheight]{img/aleph0.png}
 \end{column}
 
-\begin{column}{0.48\linewidth}
+\begin{column}{0.48\textwidth}
 \begin{longtable}[]{@{}lc@{}}
 \toprule\noalign{}
 \textbf{Item} & \textbf{Option} \\
@@ -562,12 +523,23 @@ Item 2 & Option 2 \\
 \end{columns}
 \end{frame}
 
-\subsection{Fancy layout}\label{fancy-layout}
+\subsection{Fancy layout beamer}\label{fancy-layout-beamer}
 
-\begin{frame}{bProposal beamer}
-\phantomsection\label{bproposal-beamer}
+\begin{frame}{Proposal}
+\phantomsection\label{proposal}
+\begin{itemize}
+\tightlist
+\item
+  Point A
+\item
+  Point B
+\end{itemize}
+\end{frame}
+
 \begin{columns}[T]
-\begin{column}{0.48\linewidth}
+\begin{column}{0.48\textwidth}
+\begin{frame}{Pros}
+\phantomsection\label{pros}
 \begin{itemize}
 \tightlist
 \item
@@ -577,20 +549,10 @@ Item 2 & Option 2 \\
 \item
   Best
 \end{itemize}
-\end{column}
-
-\begin{column}{0.48\linewidth}
-\begin{itemize}
-\tightlist
-\item
-  Point A
-\item
-  Point B
-\end{itemize}
-\end{column}
-\end{columns}
 \end{frame}
+\end{column}
 
+\begin{column}{0.48\textwidth}
 \begin{frame}{Cons beamer}
 \phantomsection\label{cons-beamer}
 \begin{itemize}
@@ -603,6 +565,8 @@ Item 2 & Option 2 \\
   Worst
 \end{itemize}
 \end{frame}
+\end{column}
+\end{columns}
 
 \begin{frame}{Conclusion beamer}
 \phantomsection\label{conclusion-beamer}

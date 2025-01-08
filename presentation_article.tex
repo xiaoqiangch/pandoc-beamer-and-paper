@@ -1,14 +1,51 @@
 % Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
-\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
 \documentclass[
   11pt,
+  ignorenonframetext,
 ]{article}
-\usepackage{xcolor}
-\usepackage[a4paper]{geometry}
+\usepackage{pgfpages}
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{caption label separator}{: }
+\setbeamercolor{caption name}{fg=normal text.fg}
+\beamertemplatenavigationsymbolsempty
+% Prevent slide breaks in the middle of a paragraph
+\widowpenalties 1 10000
+\raggedbottom
+\setbeamertemplate{part page}{
+  \centering
+  \begin{beamercolorbox}[sep=16pt,center]{part title}
+    \usebeamerfont{part title}\insertpart\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{section page}{
+  \centering
+  \begin{beamercolorbox}[sep=12pt,center]{part title}
+    \usebeamerfont{section title}\insertsection\par
+  \end{beamercolorbox}
+}
+\setbeamertemplate{subsection page}{
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center]{part title}
+    \usebeamerfont{subsection title}\insertsubsection\par
+  \end{beamercolorbox}
+}
+\AtBeginPart{
+  \frame{\partpage}
+}
+\AtBeginSection{
+  \ifbibliography
+  \else
+    \frame{\sectionpage}
+  \fi
+}
+\AtBeginSubsection{
+  \frame{\subsectionpage}
+}
 \usepackage{amsmath,amssymb}
-\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{setspace}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
@@ -20,9 +57,11 @@
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
+\usefonttheme{serif} % use mainfont rather than sansfont for slide text
+
 \ifPDFTeX\else
   % xetex/luatex font selection
-    \setmainfont[]{Noto Serif CJK SC}
+    \setmainfont[]{STSong}
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -40,10 +79,47 @@
 }{% if KOMA class
   \KOMAoptions{parskip=half}}
 \makeatother
-\usepackage{listings}
-\newcommand{\passthrough}[1]{#1}
-\lstset{defaultdialect=[5.3]Lua}
-\lstset{defaultdialect=[x86masm]Assembler}
+\usepackage{xcolor}
+\geometry{a4paper}
+\newif\ifbibliography
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
 \usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 \usepackage{caption}
@@ -53,50 +129,58 @@
 \makeatother
 \usepackage{graphicx}
 \makeatletter
-\newsavebox\pandoc@box
-\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
-  \sbox\pandoc@box{#1}%
-  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
-  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
-  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
-  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
-  \else\usebox{\pandoc@box}%
-  \fi%
-}
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 % Set default figure placement to htbp
+\makeatletter
 \def\fps@figure{htbp}
 \makeatother
+\ifLuaTeX
+  \usepackage{luacolor}
+  \usepackage[soul]{lua-ul}
+\else
+  \usepackage{soul}
+  \makeatletter
+  \let\HL\hl
+  \renewcommand\hl{% fix for beamer highlighting
+    \let\set@color\beamerorig@set@color
+    \let\reset@color\beamerorig@reset@color
+    \HL}
+  \makeatother
+\fi
 \setlength{\emergencystretch}{3em} % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
 \usepackage{bookmark}
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
-  pdftitle={一次输入，多重输出},
-  pdfauthor={CHEN,Xiaoqiang(陈孝强)},
-  colorlinks=true,
-  linkcolor={Maroon},
-  filecolor={Maroon},
-  citecolor={Blue},
-  urlcolor={red},
+  pdftitle={一次编写；多变输出},
+  pdfauthor={CHEN, Xiaoqiang(陈孝强)},
+  hidelinks,
   pdfcreator={LaTeX via pandoc}}
 
-\title{一次输入，多重输出}
-\author{CHEN,Xiaoqiang(陈孝强)}
-\date{2024-01-01}
+\title{一次编写；多变输出}
+\author{CHEN, Xiaoqiang(陈孝强)}
+\date{07 一月 2025}
+\institute{粑粑柑革命共同体}
 
 \begin{document}
-\maketitle
+\frame{\titlepage}
 
-{
-\hypersetup{linkcolor=}
-\setcounter{tocdepth}{3}
-\tableofcontents
-}
-\section{介绍}\label{ux4ecbux7ecd}
+\setstretch{1.25}
+\section{General information beamer}\label{general-information-beamer}
 
-\subsection{Themes, fonts, etc.}\label{themes-fonts-etc.}
+\subsection{Themes, fonts, etc. beamer}\label{themes-fonts-etc.-beamer}
 
 \begin{itemize}
 \tightlist
@@ -109,7 +193,7 @@
   I like \textbf{professionalfonts} font scheme.
 \end{itemize}
 
-\subsection{Links}\label{links}
+\subsection{Links beamer}\label{links-beamer}
 
 \begin{itemize}
 \tightlist
@@ -118,18 +202,19 @@
   \url{https://hartwork.org/beamer-theme-matrix/}
 \item
   Font themes:
-  \url{http://www.deic.uab.es/~iblanes/beamer_gallery/index_by_font.html}
+  \href{http://www.deic.uab.es/~iblanes/beamer_gallery/index_by_font.html}{http://www.deic.uab.es/\textasciitilde iblanes/beamer\emph{gallery/index}by\_font.html}
 \item
   Nerd Fonts: \url{https://nerdfonts.com}
 \end{itemize}
 
 \section{Formatting beamer}\label{formatting-beamer}
 
-\subsection{Text formatting}\label{text-formatting}
+\subsection{Text formatting beamer}\label{text-formatting-beamer}
 
-Normal text. \emph{Italic text} and \textbf{bold text}.
+Normal text. \emph{Italic text} and \textbf{bold text}. \st{Strike out}
+is supported.
 
-\subsection{Notes}\label{notes}
+\subsection{Notes beamer}\label{notes-beamer}
 
 \begin{quote}
 This is a note.
@@ -151,9 +236,12 @@ Nested notes are not supported. And it continues.
   Line B
 \end{itemize}
 
+\subsubsection{}\label{section}
+
 New block without header.
 
-\subsubsection{This is a block B.}\label{this-is-a-block-b.}
+\subsubsection{This is a block B.
+beamer}\label{this-is-a-block-b.-beamer}
 
 \begin{itemize}
 \tightlist
@@ -167,21 +255,26 @@ New block without header.
 
 Listings out of the block.
 
-\begin{lstlisting}[language=sh]
-#!/bin/bash
-echo "Hello world!"
-echo "line"
-\end{lstlisting}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#!/bin/bash}
+\BuiltInTok{echo} \StringTok{"Hello world!"}
+\BuiltInTok{echo} \StringTok{"line"}
+\end{Highlighting}
+\end{Shaded}
 
-\subsubsection{Listings in the block.}\label{listings-in-the-block.}
+\subsubsection{Listings in the block.
+beamer}\label{listings-in-the-block.-beamer}
 
-\begin{lstlisting}[language=sh]
-#!/bin/bash
-echo "Hello world!"
-echo "line"
-\end{lstlisting}
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#!/bin/bash}
+\BuiltInTok{echo} \StringTok{"Hello world!"}
+\BuiltInTok{echo} \StringTok{"line"}
+\end{Highlighting}
+\end{Shaded}
 
-\subsection{Table}\label{table}
+\subsection{Table beamer}\label{table-beamer}
 
 \begin{longtable}[]{@{}lrc@{}}
 \toprule\noalign{}
@@ -200,13 +293,13 @@ Item C & N/A & 100 \\
 This is how we insert picture. Caption is produced automatically from
 the alt text.
 
-\begin{lstlisting}
+\begin{verbatim}
 ![Aleph 0](img/aleph0.png) 
-\end{lstlisting}
+\end{verbatim}
 
 \begin{figure}
 \centering
-\pandocbounded{\includegraphics[keepaspectratio]{img/aleph0.png}}
+\includegraphics{img/aleph0.png}
 \caption{Aleph 0}
 \end{figure}
 
@@ -216,16 +309,17 @@ raw}\label{two-or-more-pictures-in-a-raw}
 Here are two pictures in the raw. We can also change two pictures size
 (height or width).
 
-\begin{lstlisting}
-![](img/aleph0.png){height=10%}\ ![](img/aleph0.png){height=30%} 
-\end{lstlisting}
+\subsubsection{}\label{section-1}
 
-\includegraphics[width=\linewidth,height=0.1\textheight,keepaspectratio]{img/aleph0.png}~\includegraphics[width=\linewidth,height=0.3\textheight,keepaspectratio]{img/aleph0.png}
+\begin{verbatim}
+![](img/aleph0.png){height=10%}\ ![](img/aleph0.png){height=30%} 
+\end{verbatim}
+
+\includegraphics[width=\textwidth,height=0.1\textheight]{img/aleph0.png}~\includegraphics[width=\textwidth,height=0.3\textheight]{img/aleph0.png}
 
 \subsection{Lists}\label{lists}
 
 \begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
   Idea 1
@@ -287,7 +381,6 @@ Another text line.
 Middle column list:
 
 \begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
   Item 1.
@@ -315,7 +408,6 @@ Another text line.
 Middle column list:
 
 \begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
   Item 1.
@@ -336,7 +428,7 @@ Right column list:
 \subsection{Two columns: image and
 text}\label{two-columns-image-and-text}
 
-\includegraphics[width=\linewidth,height=0.5\textheight,keepaspectratio]{img/aleph0.png}
+\includegraphics[width=\textwidth,height=0.5\textheight]{img/aleph0.png}
 
 Text in the right column.
 
@@ -353,7 +445,7 @@ List from the right column:
 \subsection{Two columns: image and
 table}\label{two-columns-image-and-table}
 
-\includegraphics[width=\linewidth,height=0.5\textheight,keepaspectratio]{img/aleph0.png}
+\includegraphics[width=\textwidth,height=0.5\textheight]{img/aleph0.png}
 
 \begin{longtable}[]{@{}lc@{}}
 \toprule\noalign{}
@@ -366,7 +458,7 @@ Item 1 & Option 1 \\
 Item 2 & Option 2 \\
 \end{longtable}
 
-\subsection{Fancy layout}\label{fancy-layout}
+\subsection{Fancy layout beamer}\label{fancy-layout-beamer}
 
 \subsubsection{Proposal}\label{proposal}
 
@@ -390,7 +482,7 @@ Item 2 & Option 2 \\
   Best
 \end{itemize}
 
-\subsubsection{Cons}\label{cons}
+\subsubsection{Cons beamer}\label{cons-beamer}
 
 \begin{itemize}
 \tightlist
@@ -402,7 +494,7 @@ Item 2 & Option 2 \\
   Worst
 \end{itemize}
 
-\subsubsection{Conclusion}\label{conclusion}
+\subsubsection{Conclusion beamer}\label{conclusion-beamer}
 
 \begin{itemize}
 \tightlist

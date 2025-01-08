@@ -1,22 +1,30 @@
 ---
-title: "My wonderful presentation"
-author: "Alexey Gumirov"
-institute: "My home office"
-topic: "Pandoc how-to"
-theme: "Frankfurt"
-colortheme: "beaver"
-fonttheme: "professionalfonts"
-mainfont: "STSong"
-CJKmainfont: "STSong"
-fontsize: 11pt
-urlcolor: red
-linkstyle: bold
-aspectratio: 169
-titlegraphic: img/aleph0.png
-logo: img/aleph0-small.png
-date:
-section-titles: false
-toc: true
+title: "一次编写；多变输出"
+author: "CHEN, Xiaoqiang(陈孝强)"
+institute: "粑粑柑革命共同体"
+topic: "Pandoc的平板文档"
+date: "2023-10-15"
+mainfont: STSong
+CJKmainfont: STSong
+fontfamily: STSong
+fontfamilyoptions:
+  - BoldFont=SimHei # 设置粗体字体为黑体
+  - ItalicFont=KaiTi # 设置斜体字体为楷体
+  - AutoFakeBold=true # 自动模拟粗体
+article:
+    geometry: "a4paper"
+    fontsize: "11pt"
+    linestretch: "1.25"
+    toc: true              # 添加目录
+    numbersections: true  # 给章节编号
+beamer:
+  theme: "Frankfurt"
+  colortheme: "beaver"
+  fonttheme: "professionalfonts"
+  aspectratio: "169"
+  titlegraphic: "img/aleph0.png"
+  logo: "img/aleph0-small.png"
+  section-titles: "false"
 ---
 
 # General information beamer
