@@ -1,4 +1,5 @@
 ---
+<<<<<<< HEAD
 title: "My wonderful presentation"
 author: "Alexey Gumirov"
 institute: "My home office"
@@ -43,25 +44,58 @@ This content will only appear in beamer output
 
 
 ## Themes, fonts, etc.
+=======
+title: "一次编写；多变输出"
+author: "CHEN, Xiaoqiang(陈孝强)"
+institute: "粑粑柑革命共同体"
+topic: "Pandoc的平板文档"
+date: "2023-10-15"
+mainfont: STSong
+CJKmainfont: STSong
+fontfamily: STSong
+fontfamilyoptions:
+  - BoldFont=SimHei # 设置粗体字体为黑体
+  - ItalicFont=KaiTi # 设置斜体字体为楷体
+  - AutoFakeBold=true # 自动模拟粗体
+article:
+    geometry: "a4paper"
+    fontsize: "11pt"
+    linestretch: "1.25"
+    toc: true              # 添加目录
+    numbersections: true  # 给章节编号
+beamer:
+  theme: "Frankfurt"
+  colortheme: "beaver"
+  fonttheme: "professionalfonts"
+  aspectratio: "169"
+  titlegraphic: "img/aleph0.png"
+  logo: "img/aleph0-small.png"
+  section-titles: "false"
+---
+
+# General information beamer
+
+## Themes, fonts, etc. beamer
+>>>>>>> b1440827d087a099fa4c956777f7078b5589dc60
 
 - I use default **pandoc** themes.
 - This presentation is made with **Frankfurt** theme and **beaver** color theme.
 - I like **professionalfonts** font scheme. 
 
-## Links
+## Links beamer
 
 - Matrix of beamer themes: [https://hartwork.org/beamer-theme-matrix/](https://hartwork.org/beamer-theme-matrix/)
 - Font themes: [http://www.deic.uab.es/~iblanes/beamer_gallery/index_by_font.html](http://www.deic.uab.es/~iblanes/beamer_gallery/index_by_font.html)
 - Nerd Fonts: [https://nerdfonts.com](https://nerdfonts.com)
 
-# Formatting
-## Text formatting
+# Formatting beamer
+## Text formatting beamer
 
 Normal text.
 *Italic text* and **bold text**.
 ~~Strike out~~ is supported.
 
-## Notes
+## Notes beamer
 
 > This is a note.
 > > Nested notes are not supported.
@@ -78,7 +112,7 @@ Normal text.
 
 New block without header.
 
-### This is a block B.
+### This is a block B. beamer
 
 - Line C
 - Line D
@@ -92,7 +126,7 @@ Listings out of the block.
 echo "Hello world!"
 echo "line"
 ```
-### Listings in the block.
+### Listings in the block. beamer
 
 ```sh
 #!/bin/bash
@@ -100,7 +134,7 @@ echo "Hello world!"
 echo "line"
 ```
 
-## Table
+## Table beamer
 
 **Item** | **Description** | **Q-ty**
 :--------|-----------------:|:---:
@@ -289,7 +323,7 @@ List from the right column:
 
 :::
 
-## Fancy layout
+## Fancy layout beamer
 
 ### Proposal
 
@@ -310,7 +344,7 @@ List from the right column:
 
 :::: column
 
-### Cons
+### Cons beamer
 
 - Bad
 - Worse
@@ -320,7 +354,7 @@ List from the right column:
 
 :::
 
-### Conclusion
+### Conclusion beamer
 
 - Let's go for it!
 - No way we go for it!

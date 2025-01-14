@@ -1,0 +1,81 @@
+\section{一级标题}\label{ux4e00ux7ea7ux6807ux9898}
+
+这是包含beamer的第一章节内容
+
+\subsection{二级标题}\label{ux4e8cux7ea7ux6807ux9898}
+
+\begin{itemize}
+\tightlist
+\item
+  项目1
+\item
+  项目2
+\item
+  项目3
+\end{itemize}
+
+左栏内容
+
+\begin{itemize}
+\tightlist
+\item
+  列表项1
+\item
+  列表项2
+\end{itemize}
+
+右栏内容
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  编号1
+\item
+  编号2
+\end{enumerate}
+
+\section{另一个一级标题}\label{ux53e6ux4e00ux4e2aux4e00ux7ea7ux6807ux9898}
+
+这个标题不包含beamer，内容将被过滤
+
+\subsection{二级标题}\label{ux4e8cux7ea7ux6807ux9898-1}
+
+\begin{itemize}
+\tightlist
+\item
+  被过滤的内容
+\item
+  不会显示
+\end{itemize}
+
+\subsubsection{图片示例 beamer}\label{ux56feux7247ux793aux4f8b-beamer}
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{img/aleph0.png}}
+\caption{全屏图片}
+\end{figure}
+
+\subsubsection{表格示例}\label{ux8868ux683cux793aux4f8b}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+列1 & 列2 & 列3 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+A & B & C \\
+1 & 2 & 3 \\
+\end{longtable}
+
+\section{最后一个一级标题}\label{ux6700ux540eux4e00ux4e2aux4e00ux7ea7ux6807ux9898}
+
+\subsection{最终章节内容}\label{ux6700ux7ec8ux7ae0ux8282ux5185ux5bb9}
+
+\subsubsection{三级标题}\label{ux4e09ux7ea7ux6807ux9898}
+
+左栏三级标题 beamer 左栏详细内容
+
+右栏三级标题 beamer 右栏详细内容

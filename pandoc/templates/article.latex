@@ -133,9 +133,7 @@ $if(outertheme)$
 $endif$
 $endif$
 $-- User font settings (must come after default font and Beamer theme)
-$if(fontfamily)$
-\usepackage[$for(fontfamilyoptions)$$fontfamilyoptions$$sep$,$endfor$]{$fontfamily$}
-$endif$
+
 \ifPDFTeX\else
   % xetex/luatex font selection
 $if(mainfont)$

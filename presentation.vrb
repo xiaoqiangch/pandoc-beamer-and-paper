@@ -1,0 +1,10 @@
+\frametitle{Two or more pictures in a raw}
+\phantomsection\label{two-or-more-pictures-in-a-raw}
+Here are two pictures in the raw. We can also change two pictures size
+(height or width).
+
+\begin{lstlisting}
+![](img/aleph0.png){height=10%}\ ![](img/aleph0.png){height=30%}
+\end{lstlisting}
+
+\includegraphics[width=\textwidth,height=0.1\textheight]{img/aleph0.png}~\includegraphics[width=\textwidth,height=0.3\textheight]{img/aleph0.png}

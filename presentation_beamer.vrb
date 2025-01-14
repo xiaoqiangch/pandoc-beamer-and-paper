@@ -1,0 +1,7 @@
+\frametitle{}
+\phantomsection\label{section-1}
+\begin{lstlisting}
+![](img/aleph0.png){height=10%}\ ![](img/aleph0.png){height=30%}
+\end{lstlisting}
+
+\includegraphics[width=\textwidth,height=0.1\textheight]{img/aleph0.png}~\includegraphics[width=\textwidth,height=0.3\textheight]{img/aleph0.png}
