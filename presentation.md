@@ -5,20 +5,42 @@ institute: "My home office"
 topic: "Pandoc how-to"
 theme: "Frankfurt"
 colortheme: "beaver"
-fonttheme: "professionalfonts"
-mainfont: "Hack Nerd Font"
 fontsize: 11pt
 urlcolor: red
 linkstyle: bold
 aspectratio: 169
-titlegraphic: img/aleph0.png
-logo: img/aleph0-small.png
+titlegraphic: img/themes/aleph0.png
+logo: img/themes/aleph0-small.png
 date:
 section-titles: false
 toc: true
+system: mac
 ---
 
+# Output Format Differences
+
+## Beamer vs Article Output
+
+This presentation demonstrates the differences between beamer (slide) and article (document) output formats:
+
+- **Beamer Output**:
+  - Content is split into slides
+  - Columns appear side-by-side
+  - Slide-specific formatting is preserved
+  - Beamer-specific elements are visible
+
+- **Article Output**:
+  - Content flows continuously
+  - Columns stack vertically
+  - Beamer-specific elements are removed
+  - More suitable for printed documents
+
+::: beamer
+This content will only appear in beamer output
+:::
+
 # General information
+
 
 ## Themes, fonts, etc.
 
@@ -91,10 +113,10 @@ Item C | N/A | 100
 This is how we insert picture. Caption is produced automatically from the alt text.
 
 ```
-![Aleph 0](img/aleph0.png) 
+![Aleph 0](img/themes/aleph0.png) 
 ```
 
-![Aleph 0](img/aleph0.png) 
+![Aleph 0](img/themes/aleph0.png) 
 
 ## Two or more pictures in a raw
 
@@ -102,10 +124,10 @@ Here are two pictures in the raw. We can also change two pictures size (height o
 
 ###
 ```
-![](img/aleph0.png){height=10%}\ ![](img/aleph0.png){height=30%} 
+![](img/themes/aleph0.png){height=10%}\ ![](img/themes/aleph0.png){height=30%} 
 ```
 
-![](img/aleph0.png){ height=10% }\ ![](img/aleph0.png){ height=30% }
+![](img/themes/aleph0.png){ height=10% }\ ![](img/themes/aleph0.png){ height=30% }
 
 ## Lists
 
@@ -230,7 +252,7 @@ Right column list:
 
 :::: column
 
-![](img/aleph0.png){height=50%}
+![](img/themes/aleph0.png){height=50%}
 
 ::::
 
@@ -302,3 +324,29 @@ List from the right column:
 
 - Let's go for it!
 - No way we go for it!
+
+## Article vs Beamer Differences
+
+### Long Paragraph
+
+This is a long paragraph that demonstrates how text flows differently in article mode versus beamer mode. In article mode, the text will flow naturally across the full page width, creating a more traditional document layout. In beamer mode, the text will be constrained to slide dimensions, often requiring manual line breaks or adjustments to fit within the slide boundaries.
+
+### Mathematical Formulas
+
+Here is an example of a mathematical formula:
+
+$$
+f(x) = \int_{-\infty}^\infty \hat f(\xi)\,e^{2 \pi i \xi x} \,d\xi
+$$
+
+In article mode, this formula will be centered on its own line with proper spacing. In beamer mode, it may need to be scaled down to fit within the slide.
+
+### Block Quotes
+
+> This is a block quote that will appear differently in article and beamer modes. In article mode, it will have proper indentation and spacing. In beamer mode, it may be styled according to the beamer theme.
+
+### Footnotes
+
+Here is some text with a footnote[^note].
+
+[^note]: This is a footnote. In article mode, it will appear at the bottom of the page. In beamer mode, it may appear inline or at the bottom of the slide.
