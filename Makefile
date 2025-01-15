@@ -20,51 +20,26 @@ BEAMER_FILTER := $(DATA_DIR)/beamer-filter.lua
 # 获取当前日期
 DATE_COVER := $(shell date "+%d %B %Y")
 
-# 从presentation.md读取配置
-TITLE := $(shell $(YQ) '.title' presentation.md)
-AUTHOR := $(shell $(YQ) '.author' presentation.md)
-INSTITUTE := $(shell $(YQ) '.institute' presentation.md)
-TOPIC := $(shell $(YQ) '.topic' presentation.md)
-MAINFONT := $(shell $(YQ) '.mainfont' presentation.md)
-CJKMAINFONT := $(shell $(YQ) '.CJKmainfont' presentation.md)
-FONTFAMILY := $(shell $(YQ) '.fontfamily' presentation.md)
-FONTFAMILYOPTIONS := $(shell $(YQ) '.fontfamilyoptions' presentation.md)
+# Standard PDF generation
+$(OUTPUT): $(INPUT)
+	pandoc -s --dpi=300 --slide-level 2 --toc --listings --shift-heading-level=0 \
+	--data-dir=$(DATA_DIR) --template default_mod.latex \
+	--pdf-engine $(PDF_ENGINE) -f "$(SOURCE_FORMAT)" -M date="$(DATE_COVER)" \
+	-V classoption:aspectratio=169 -t beamer $< -o $@
 
-# 文章配置
-ARTICLE_GEOMETRY := $(shell $(YQ) '.article.geometry' presentation.md)
-ARTICLE_FONTSIZE := $(shell $(YQ) '.article.fontsize' presentation.md)
-ARTICLE_LINESTRETCH := $(shell $(YQ) '.article.linestretch' presentation.md)
-ARTICLE_TOC := $(shell $(YQ) '.article.toc' presentation.md)
-ARTICLE_NUMBERSECTIONS := $(shell $(YQ) '.article.numbersections' presentation.md)
+# PDF with preamble
+$(OUTPUT_NICE): $(INPUT)
+	pandoc -s --dpi=300 --slide-level 2 --toc --listings --shift-heading-level=0 \
+	--data-dir=$(DATA_DIR) --template default_mod.latex -H pandoc/templates/preamble.tex \
+	--pdf-engine $(PDF_ENGINE) -f "$(SOURCE_FORMAT)" -M date="$(DATE_COVER)" \
+	-V classoption:aspectratio=169 -t beamer $< -o $@
 
-# Beamer配置
-BEAMER_THEME := $(shell $(YQ) '.beamer.theme' presentation.md)
-BEAMER_COLORTHEME := $(shell $(YQ) '.beamer.colortheme' presentation.md)
-BEAMER_FONTTHEME := $(shell $(YQ) '.beamer.fonttheme' presentation.md)
-BEAMER_ASPECTRATIO := $(shell $(YQ) '.beamer.aspectratio' presentation.md)
-BEAMER_TITLEGRAPHIC := $(shell $(YQ) '.beamer.titlegraphic' presentation.md)
-BEAMER_LOGO := $(shell $(YQ) '.beamer.logo' presentation.md)
-BEAMER_SECTION_TITLES := $(shell $(YQ) '.beamer.section-titles' presentation.md)
-
-# 默认选项
-USE_LUA_FILTER ?= 1
-USE_PREAMBLE ?= 1
-USE_TEMPLATE ?= 1
-
-# 生成文章PDF
-article: presentation_article.pdf
-
-presentation_article.tex: presentation.md
-	$(PANDOC) -s --dpi=300 --data-dir=$(DATA_DIR) \
-	$(if $(filter 1,$(USE_LUA_FILTER)),--lua-filter=$(ARTICLE_FILTER)) \
-	-f $(SOURCE_FORMAT) -M date="$(DATE_COVER)" \
-	$(if $(filter 1,$(USE_PREAMBLE)),-H $(ARTICLE_PREAMBLE)) \
-	$(if $(filter 1,$(USE_TEMPLATE)),--template=$(ARTICLE_TEMPLATE)) \
-	-V geometry="$(ARTICLE_GEOMETRY)" \
-	-V fontsize="$(ARTICLE_FONTSIZE)" \
-	-V linestretch="$(ARTICLE_LINESTRETCH)" \
-	-V fontfamily="$(FONTFAMILY)" \
-	-V beamer=0 \
+# Article PDF generation
+$(ARTICLE_OUTPUT): $(INPUT)
+	pandoc -s --dpi=300 --toc --listings --shift-heading-level=0 \
+	--data-dir=$(DATA_DIR) --template default_mod.latex \
+	--lua-filter=pandoc/filters/beamer_filter.lua \
+	--pdf-engine $(PDF_ENGINE) -f "$(SOURCE_FORMAT)" -M date="$(DATE_COVER)" \
 	-t latex $< -o $@
 
 presentation_article.pdf: presentation_article.tex
