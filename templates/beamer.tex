@@ -1,0 +1,42 @@
+% Beamer演示文稿模板
+% 作者：chenxiaoqiang
+% 版本：1.0
+% 最后更新：2023-10-01
+
+\documentclass[10pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{ctex}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{multicol}
+
+% 主题设置
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% 标题格式
+\title{$title$}
+\subtitle{$subtitle$}
+\author{$author$}
+\institute{$institute$}
+\date{$date$}
+
+\begin{document}
+
+\frame{\titlepage}
+
+$if(abstract)$
+\begin{frame}
+\frametitle{摘要}
+\begin{abstract}
+$abstract$
+\end{abstract}
+\end{frame}
+$endif$
+
+$body$
+
+\end{document}

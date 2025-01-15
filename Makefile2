@@ -1,0 +1,180 @@
+# Makefile for converting Markdown to LaTeX, PDF, and Word documents
+# make  all  INPUT_MD="../120.000 - 博士论文 - 数字时代中国高水平科技自立自强的测度与实现路径.md"  FORCE_REBUILD=true
+# make watch WATCH_FILE="../120.000 - 博士论文 - 数字时代中国高水平科技自立自强的测度与实现路径.md"   
+# make  all  INPUT_MD="../120.000 - 博士论文 - 数字时代中国高水平科技自立自强的测度与实现路径.md"
+
+# Variables
+FORCE_REBUILD = false
+
+# Parse command line arguments
+
+INPUT_MD ?= $(wildcard *.md)
+# SCRIPT_DIR = $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
+# RESOURCE_DIR = $(SCRIPT_DIR)
+TIMESTAMP = $(shell date +%Y%m%d%H%M%S)
+BUILD_DIR = build
+LOG_DIR =log
+TEMPLATE_DIR=templates
+LOG_FILE = $(LOG_DIR)/conversion_$(TIMESTAMP).log
+TEMP_FILE = preprocessed_markdown.md
+YAML_FILE = document_metadata.yaml
+LATEX_FILE = thesis.tex
+PDF_FILE = $(BUILD_DIR)/thesis.pdf
+DOCX_FILE = $(BUILD_DIR)/thesis.docx
+FIGURE_DIR = figure
+ZOTERO_BIB_FILE = references.bib
+ZOTERO_HOST = 127.0.0.1
+ZOTERO_PORT = 23119
+YAML_TEMPLATE = extract_yaml.txt
+LATEX_HEADER = xqHeader.tex
+LATEX_TEMPLATE= njuthesis.tex
+ZOTERO_LUA="/Users/chenxiaoqiang/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian_Brain/toolbox/zotero.lua"
+COMMENT_LUA="tools/delete-comments.lua"
+WORD_REF=exportreference.docx
+
+
+# Default target
+all: $(PDF_FILE) $(DOCX_FILE)
+
+# Create figure directory
+init_build_dir:
+	@echo "Creating build directory structure..." | tee -a $(LOG_FILE)
+	@mkdir -p $(BUILD_DIR)
+	@mkdir -p $(FIGURE_DIR)
+
+figures_dir: init_build_dir
+	@echo "Creating figure directory..." | tee -a $(LOG_FILE)
+
+# Copy images to figure directory
+copy_images: preprocess_md figures_dir
+	@echo "Copying images to figure directory..." | tee -a $(LOG_FILE)
+	@INPUT_ABS_PATH=$$(realpath "$(INPUT_MD)"); \
+	INPUT_DIR="$$(dirname "$$INPUT_ABS_PATH")"; \
+	@echo "FUCK: $$INPUT_DIR";\
+	ATTACHMENTS_DIR=$$(echo "$$INPUT_DIR" | sed 's|Obsidian_Brain/|Obsidian_Brain/attachments/|'); \
+	@echo "New path with attachments: $$ATTACHMENTS_DIR" | tee -a "$(LOG_FILE)";\
+	@IFS=$$'\n'; \
+	grep -o '!\[\]([^)]*)' $(TEMP_FILE) | \
+	sed -E 's/!\[\]\(([^)]+)\)/\1/' | \
+	while read -r IMG; do \
+		IMG_PATH="$$ATTACHMENTS_DIR/$$IMG"; \
+		IMG_BASENAME="$$(basename "$$IMG_PATH")"; \
+		TARGET_PATH="$(FIGURE_DIR)/$$IMG_BASENAME"; \
+		echo "Attempting to copy image: \"$$IMG_PATH\" -> \"$$TARGET_PATH\"" | tee -a $(LOG_FILE); \
+		if [ -f "$$IMG_PATH" ]; then \
+			if [ "$(FORCE_REBUILD)" = "true" ] || [ ! -f "$$TARGET_PATH" ]; then \
+				cp "$$IMG_PATH" "$$TARGET_PATH" && \
+				echo "Successfully copied: \"$$IMG_PATH\" -> \"$$TARGET_PATH\"" | tee -a $(LOG_FILE); \
+			else \
+				echo "Skipping existing image: \"$$TARGET_PATH\"" | tee -a $(LOG_FILE); \
+			fi; \
+		else \
+			echo "Warning: Image file \"$$IMG_PATH\" not found" | tee -a $(LOG_FILE); \
+		fi; \
+	done
+
+# Convert SVG to PNG
+convert_svg: copy_images
+	@echo "Converting SVG images to PNG..." | tee -a $(LOG_FILE)
+	@for SVG_FILE in $(FIGURE_DIR)/*.svg; do \
+		if [ -f "$$SVG_FILE" ]; then \
+			PNG_FILE="$${SVG_FILE%.svg}.png"; \
+			if [ "$(FORCE_REBUILD)" = "true" ] || [ ! -f "$$PNG_FILE" ]; then \
+				/Applications/draw.io.app/Contents/MacOS/draw.io -x -f png -o "$$PNG_FILE" "$$SVG_FILE" >> $(LOG_FILE) 2>&1; \
+				if [ $$? -eq 0 ]; then \
+					echo "Successfully converted: $$SVG_FILE -> $$PNG_FILE" | tee -a $(LOG_FILE); \
+				else \
+					echo "Warning: Failed to convert $$SVG_FILE to PNG" | tee -a $(LOG_FILE); \
+				fi; \
+			else \
+				echo "Skipping existing PNG file: $$PNG_FILE" | tee -a $(LOG_FILE); \
+			fi; \
+			sed -i '' -E "s|!\[\]\(([^)]*)$$(basename "$$SVG_FILE")\)|![](\1$$(basename "$$PNG_FILE"))|g" $(TEMP_FILE); \
+		fi; \
+	done
+
+# Preprocess markdown file
+preprocess_md:
+	@echo "Preprocessing markdown file..." | tee -a $(LOG_FILE)
+	@if [ -z "$(INPUT_MD)" ]; then \
+		echo "Error: INPUT_MD is not set"; \
+		exit 1; \
+	fi
+	@INPUT_ABS_PATH=$$(realpath "$(INPUT_MD)"); \
+	echo "Processing file: $$INPUT_ABS_PATH" | tee -a $(LOG_FILE); \
+	cp "$$INPUT_ABS_PATH" $(TEMP_FILE)
+	sed -i '' -E 's/!\[\[([^]]+)\]\]/![](\1)/g' $(TEMP_FILE)
+	sed -i '' -E 's/!\[\]\(([^)]*\.svg)\)/![](\1)/g' $(TEMP_FILE)
+	sed -i '' -E 's/%20/ /g' $(TEMP_FILE)
+
+# Extract YAML metadata
+$(YAML_FILE): preprocess_md $(YAML_TEMPLATE)
+	@echo "Extracting YAML metadata..." | tee -a $(LOG_FILE)
+	pandoc $(TEMP_FILE) --template=$(YAML_TEMPLATE) -o $(YAML_FILE) 2>> $(LOG_FILE)
+
+# Fetch references from Zotero
+$(ZOTERO_BIB_FILE):
+	@if [ "$(FORCE_REBUILD)" = "true" ] || [ ! -f "$(ZOTERO_BIB_FILE)" ]; then \
+		echo "Fetching references from Zotero..." | tee -a $(LOG_FILE); \
+		curl -s -o $(ZOTERO_BIB_FILE) \
+			"http://$(ZOTERO_HOST):$(ZOTERO_PORT)/better-bibtex/export/library?/1/library.bib" 2>> $(LOG_FILE); \
+	else \
+		echo "Skipping existing references file: $(ZOTERO_BIB_FILE)" | tee -a $(LOG_FILE); \
+	fi
+
+# Convert to LaTeX
+$(LATEX_FILE): preprocess_md $(YAML_FILE) $(ZOTERO_BIB_FILE) $(LATEX_HEADER) convert_svg
+	@echo "Converting to LaTeX..." | tee -a $(LOG_FILE)
+	pandoc $(TEMP_FILE) -o $(LATEX_FILE) \
+		--template=$(LATEX_TEMPLATE) \
+		--bibliography=$(ZOTERO_BIB_FILE) \
+		--filter pandoc-crossref \
+		--biblatex \
+		-M cref=true \
+		-M linkReferences=true \
+		-M codeBlockCaptions=true \
+		-M chapters=true \
+		-M sections=true \
+		--metadata-file=$(YAML_FILE) \
+		--resource-path=$(FIGURE_DIR)/ \
+		--include-in-header=$(LATEX_HEADER) \
+		--top-level-division=chapter 2>> $(LOG_FILE)
+
+# Generate PDF
+#$(PDF_FILE): $(LATEX_FILE)
+#	@echo "Generating PDF..." | tee -a $(LOG_FILE)
+#	-TEXINPUTS=.:figure:xelatex -shell-escape -interaction=nonstopmode $(LATEX_FILE) >> $(LOG_FILE) 2>&1 || true
+#	-biber thesis >> $(LOG_FILE) 2>&1 || true
+#	-TEXINPUTS=.:figure:xelatex -shell-escape -interaction=nonstopmode $(LATEX_FILE) >> $(LOG_FILE) 2>&1 || true
+#	-TEXINPUTS=.:figure:xelatex -shell-escape -interaction=nonstopmode $(LATEX_FILE) >> $(LOG_FILE) 2>&1 || true
+
+$(PDF_FILE): $(LATEX_FILE)
+	@echo "Generating PDF using latexmk..." | tee -a $(LOG_FILE)
+	@echo "=== Compilation started at: $(shell date) ===" >> $(LOG_FILE)
+	TEXINPUTS=.:$(FIGURE_DIR):: latexmk -f -g -xelatex -shell-escape -interaction=nonstopmode -logfilewarninglist -outdir=$(dir $(PDF_FILE)) $(LATEX_FILE) >> $(LOG_FILE) 2>&1 || true
+	@echo "=== Compilation finished at: $(shell date) ===" >> $(LOG_FILE)
+
+# Generate Word document
+$(DOCX_FILE): preprocess_md $(YAML_FILE) $(ZOTERO_BIB_FILE)
+	@echo "Generating Word document..." | tee -a $(LOG_FILE)
+	pandoc -f markdown $(TEMP_FILE) -o $(DOCX_FILE) \
+		--bibliography=$(ZOTERO_BIB_FILE) \
+		--citeproc \
+		--filter pandoc-crossref \
+		--resource-path =.:$(FIGURE_DIR) \
+		--lua-filter=$(ZOTERO_LUA) \
+		--reference-doc=$(WORD_REF)\
+		--metadata-file=$(YAML_FILE) 2>> $(LOG_FILE)
+
+# Clean up temporary files
+clean:
+	latexmk -c
+	rm -f $(TEMP_FILE) $(YAML_FILE) $(LOG_FILE)
+
+.PHONY: all clean watch
+
+# Watch target
+# Usage: make watch [WATCH_FILES=path/to/file1 path/to/file2]
+watch:
+	@echo "Watching for changes in $(WATCH_FILE)..."
+	echo $(WATCH_FILE) | entr -s 'echo "File change detected. Waiting 200 seconds before recompiling..."; sleep 200; make all INPUT_MD="$$0" || true'

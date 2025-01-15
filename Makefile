@@ -1,112 +1,176 @@
 # Makefile for generating presentation PDFs
+# 作者：chenxiaoqiang
+# 版本：1.0
+# 最后更新：2023-10-01
+
+# ====================
+# 1. 基本配置
+# ====================
+
+# 作者：chenxiaoqiang
+# 版本：2.0
+# 最后更新：2023-10-01
 
 # 工具路径
 YQ := yq
 PANDOC := pandoc
+LATEXMK := latexmk
+DRAWIO := /Applications/draw.io.app/Contents/MacOS/draw.io
 
-# 配置路径
-DATA_DIR := pandoc
+# 输入输出配置
+INPUT_MD ?= presentation.md
+BUILD_DIR := build
+LOG_DIR := log
+FIGURE_DIR := figure
+TEMP_FILE := preprocessed_markdown.md
+YAML_FILE := document_metadata.yaml
+
+# 文档输出
+ARTICLE_OUTPUT := $(BUILD_DIR)/presentation_article.pdf
+BEAMER_OUTPUT := $(BUILD_DIR)/presentation_beamer.pdf
+LATEX_OUTPUT := $(BUILD_DIR)/thesis.tex
+DOCX_OUTPUT := $(BUILD_DIR)/thesis.docx
+
+# Pandoc配置
 PDF_ENGINE := xelatex
 SOURCE_FORMAT := markdown_strict+pipe_tables+backtick_code_blocks+auto_identifiers+strikeout+yaml_metadata_block+implicit_figures+all_symbols_escapable+link_attributes+smart+fenced_divs
 
 # 模板路径
-ARTICLE_TEMPLATE := $(DATA_DIR)/templates/article.latex
-BEAMER_TEMPLATE := $(DATA_DIR)/templates/beamer.latex
-ARTICLE_PREAMBLE := $(DATA_DIR)/templates/article-preamble.tex
-BEAMER_PREAMBLE := $(DATA_DIR)/templates/beamer-preamble.tex
-ARTICLE_FILTER := $(DATA_DIR)/article-filter.lua
-BEAMER_FILTER := $(DATA_DIR)/beamer-filter.lua
+TEMPLATE_DIR := templates
+ARTICLE_TEMPLATE := $(TEMPLATE_DIR)/article.tex
+BEAMER_TEMPLATE := $(TEMPLATE_DIR)/beamer.tex
+ARTICLE_PREAMBLE := $(TEMPLATE_DIR)/article-preamble.tex
+BEAMER_PREAMBLE := $(TEMPLATE_DIR)/beamer-preamble.tex
+LATEX_TEMPLATE := $(TEMPLATE_DIR)/njuthesis.tex
+LATEX_HEADER := $(TEMPLATE_DIR)/xqHeader.tex
+YAML_TEMPLATE := $(TEMPLATE_DIR)/extract_yaml.txt
+WORD_REF := $(TEMPLATE_DIR)/exportreference.docx
 
-# 获取当前日期
-DATE_COVER := $(shell date "+%d %B %Y")
+# 过滤器路径
+ARTICLE_FILTER := filters/article-filter.lua
+BEAMER_FILTER := filters/beamer-filter.lua
+ZOTERO_LUA := filters/zotero.lua
 
-# Standard PDF generation
-$(OUTPUT): $(INPUT)
-	pandoc -s --dpi=300 --slide-level 2 --toc --listings --shift-heading-level=0 \
-	--data-dir=$(DATA_DIR) --template default_mod.latex \
-	--pdf-engine $(PDF_ENGINE) -f "$(SOURCE_FORMAT)" -M date="$(DATE_COVER)" \
-	-V classoption:aspectratio=169 -t beamer $< -o $@
+# 参考文献配置
+ZOTERO_BIB_FILE := references.bib
+ZOTERO_HOST := 127.0.0.1
+ZOTERO_PORT := 23119
 
-# PDF with preamble
-$(OUTPUT_NICE): $(INPUT)
-	pandoc -s --dpi=300 --slide-level 2 --toc --listings --shift-heading-level=0 \
-	--data-dir=$(DATA_DIR) --template default_mod.latex -H pandoc/templates/preamble.tex \
-	--pdf-engine $(PDF_ENGINE) -f "$(SOURCE_FORMAT)" -M date="$(DATE_COVER)" \
-	-V classoption:aspectratio=169 -t beamer $< -o $@
+# 其他配置
+FORCE_REBUILD := false
+TIMESTAMP := $(shell date +%Y%m%d%H%M%S)
+LOG_FILE := $(LOG_DIR)/conversion_$(TIMESTAMP).log
 
-# Article PDF generation
-$(ARTICLE_OUTPUT): $(INPUT)
-	pandoc -s --dpi=300 --toc --listings --shift-heading-level=0 \
-	--data-dir=$(DATA_DIR) --template default_mod.latex \
-	--lua-filter=pandoc/filters/beamer_filter.lua \
-	--pdf-engine $(PDF_ENGINE) -f "$(SOURCE_FORMAT)" -M date="$(DATE_COVER)" \
-	-t latex $< -o $@
+# ====================
+# 2. 初始化
+# ====================
 
-presentation_article.pdf: presentation_article.tex
-	$(PANDOC) -s --dpi=300 --data-dir=$(DATA_DIR) --pdf-engine $(PDF_ENGINE) \
-	$(if $(filter 1,$(USE_LUA_FILTER)),--lua-filter=$(ARTICLE_FILTER)) \
-	-f $(SOURCE_FORMAT) -M date="$(DATE_COVER)" \
-	$(if $(filter 1,$(USE_PREAMBLE)),-H $(ARTICLE_PREAMBLE)) \
-	$(if $(filter 1,$(USE_TEMPLATE)),--template=$(ARTICLE_TEMPLATE)) \
-	-V geometry="$(ARTICLE_GEOMETRY)" \
-	-V fontsize="$(ARTICLE_FONTSIZE)" \
-	-V linestretch="$(ARTICLE_LINESTRETCH)" \
-	-V fontfamily="$(FONTFAMILY)" \
-	-V beamer=0 \
-	-t latex presentation.md -o $@
+init:
+	@echo "初始化构建目录结构..." | tee -a $(LOG_FILE)
+	@mkdir -p $(BUILD_DIR) $(LOG_DIR) $(FIGURE_DIR)
 
-# 生成Beamer PDF
-beamer: presentation_beamer.pdf
+# ====================
+# 3. 预处理
+# ====================
 
-presentation_beamer.tex: presentation.md
-	$(PANDOC) -s --dpi=300 --slide-level 3 --toc --listings --shift-heading-level=0 \
-	--data-dir=$(DATA_DIR) \
-	$(if $(filter 1,$(USE_TEMPLATE)),--template=$(BEAMER_TEMPLATE)) \
-	$(if $(filter 1,$(USE_PREAMBLE)),-H $(BEAMER_PREAMBLE)) \
-	-f $(SOURCE_FORMAT) -M date="$(DATE_COVER)" \
-	$(if $(filter 1,$(USE_LUA_FILTER)),--lua-filter=$(BEAMER_FILTER)) \
-	-V theme="$(BEAMER_THEME)" \
-	-V colortheme="$(BEAMER_COLORTHEME)" \
-	-V fonttheme="$(BEAMER_FONTTHEME)" \
-	-V aspectratio="$(BEAMER_ASPECTRATIO)" \
-	-V titlegraphic="$(BEAMER_TITLEGRAPHIC)" \
-	-V logo="$(BEAMER_LOGO)" \
-	-V section-titles="$(BEAMER_SECTION_TITLES)" \
-	-V classoption:aspectratio=169 \
-	-t beamer $< -o $@
+preprocess: init
+	@echo "预处理Markdown文件..." | tee -a $(LOG_FILE)
+	@if [ -z "$(INPUT_MD)" ]; then \
+		echo "错误：未设置INPUT_MD"; \
+		exit 1; \
+	fi
+	@cp "$(INPUT_MD)" $(TEMP_FILE)
+	@sed -i '' -E 's/!\[\[([^]]+)\]\]/![](\1)/g' $(TEMP_FILE)
+	@sed -i '' -E 's/!\[\]\(([^)]*\.svg)\)/![](\1)/g' $(TEMP_FILE)
+	@sed -i '' -E 's/%20/ /g' $(TEMP_FILE)
 
-presentation_beamer.pdf: presentation_beamer.tex
-	$(PANDOC) -s --dpi=300 --slide-level 3 --toc --listings --shift-heading-level=0 \
-	--data-dir=$(DATA_DIR) \
-	$(if $(filter 1,$(USE_TEMPLATE)),--template=$(BEAMER_TEMPLATE)) \
-	$(if $(filter 1,$(USE_PREAMBLE)),-H $(BEAMER_PREAMBLE)) \
-	--pdf-engine $(PDF_ENGINE) -f $(SOURCE_FORMAT) -M date="$(DATE_COVER)" \
-	$(if $(filter 1,$(USE_LUA_FILTER)),--lua-filter=$(BEAMER_FILTER)) \
-	-V theme="$(BEAMER_THEME)" \
-	-V colortheme="$(BEAMER_COLORTHEME)" \
-	-V fonttheme="$(BEAMER_FONTTHEME)" \
-	-V aspectratio="$(BEAMER_ASPECTRATIO)" \
-	-V titlegraphic="$(BEAMER_TITLEGRAPHIC)" \
-	-V logo="$(BEAMER_LOGO)" \
-	-V section-titles="$(BEAMER_SECTION_TITLES)" \
-	-V classoption:aspectratio=169 \
-	-t beamer presentation.md -o $@
+# ====================
+# 4. 图片处理
+# ====================
 
-# 组合目标
-all: article beamer
+copy_images: preprocess
+	@echo "复制图片到figure目录..." | tee -a $(LOG_FILE)
+	@INPUT_ABS_PATH=$$(realpath "$(INPUT_MD)"); \
+	INPUT_DIR="$$(dirname "$$INPUT_ABS_PATH")"; \
+	ATTACHMENTS_DIR=$$(echo "$$INPUT_DIR" | sed 's|Obsidian_Brain/|Obsidian_Brain/attachments/|'); \
+	@grep -o '!\[\]([^)]*)' $(TEMP_FILE) | \
+	sed -E 's/!\[\]\(([^)]+)\)/\1/' | \
+	while read -r IMG; do \
+		IMG_PATH="$$ATTACHMENTS_DIR/$$IMG"; \
+		IMG_BASENAME="$$(basename "$$IMG_PATH")"; \
+		TARGET_PATH="$(FIGURE_DIR)/$$IMG_BASENAME"; \
+		if [ -f "$$IMG_PATH" ]; then \
+			if [ "$(FORCE_REBUILD)" = "true" ] || [ ! -f "$$TARGET_PATH" ]; then \
+				cp "$$IMG_PATH" "$$TARGET_PATH"; \
+			fi; \
+		fi; \
+	done
 
-# 选项控制
-no-lua:
-	$(MAKE) USE_LUA_FILTER=0 all
+convert_svg: copy_images
+	@echo "转换SVG图片为PNG..." | tee -a $(LOG_FILE)
+	@for SVG_FILE in $(FIGURE_DIR)/*.svg; do \
+		if [ -f "$$SVG_FILE" ]; then \
+			PNG_FILE="$${SVG_FILE%.svg}.png"; \
+			if [ "$(FORCE_REBUILD)" = "true" ] || [ ! -f "$$PNG_FILE" ]; then \
+				$(DRAWIO) -x -f png -o "$$PNG_FILE" "$$SVG_FILE"; \
+			fi; \
+			sed -i '' -E "s|!\[\]\(([^)]*)$$(basename "$$SVG_FILE")\)|![](\1$$(basename "$$PNG_FILE"))|g" $(TEMP_FILE); \
+		fi; \
+	done
 
-no-preamble:
-	$(MAKE) USE_PREAMBLE=0 all
+# ====================
+# 5. 文档生成
+# ====================
 
-no-template:
-	$(MAKE) USE_TEMPLATE=0 all
+# 生成文章格式PDF
+$(ARTICLE_OUTPUT): preprocess convert_svg
+	$(PANDOC) $(TEMP_FILE) -o $@ \
+		--template=$(ARTICLE_TEMPLATE) \
+		--pdf-engine=$(PDF_ENGINE) \
+		-f $(SOURCE_FORMAT) \
+		--filter=$(ARTICLE_FILTER) \
+		--include-in-header=$(ARTICLE_PREAMBLE)
 
-# 清理
+# 生成Beamer格式PDF
+$(BEAMER_OUTPUT): preprocess convert_svg
+	$(PANDOC) $(TEMP_FILE) -o $@ \
+		--template=$(BEAMER_TEMPLATE) \
+		--pdf-engine=$(PDF_ENGINE) \
+		-f $(SOURCE_FORMAT) \
+		--filter=$(BEAMER_FILTER) \
+		--include-in-header=$(BEAMER_PREAMBLE) \
+		-t beamer
+
+# 生成LaTeX文件
+$(LATEX_OUTPUT): preprocess convert_svg
+	$(PANDOC) $(TEMP_FILE) -o $@ \
+		--template=$(LATEX_TEMPLATE) \
+		--bibliography=$(ZOTERO_BIB_FILE) \
+		--filter pandoc-crossref \
+		--biblatex \
+		--include-in-header=$(LATEX_HEADER)
+
+# 生成Word文档
+$(DOCX_OUTPUT): preprocess convert_svg
+	$(PANDOC) $(TEMP_FILE) -o $@ \
+		--bibliography=$(ZOTERO_BIB_FILE) \
+		--citeproc \
+		--filter pandoc-crossref \
+		--lua-filter=$(ZOTERO_LUA) \
+		--reference-doc=$(WORD_REF)
+
+# ====================
+# 6. 组合目标
+# ====================
+
+all: $(ARTICLE_OUTPUT) $(BEAMER_OUTPUT) $(LATEX_OUTPUT) $(DOCX_OUTPUT)
+
+# ====================
+# 7. 清理
+# ====================
+
 clean:
-	rm -f presentation_article.* presentation_beamer.*
+	@echo "清理生成的文件..." | tee -a $(LOG_FILE)
+	@rm -rf $(BUILD_DIR) $(LOG_DIR) $(FIGURE_DIR) $(TEMP_FILE) $(YAML_FILE)
 
-.PHONY: article beamer all no-lua no-preamble no-template clean
+.PHONY: all clean init preprocess copy_images convert_svg
