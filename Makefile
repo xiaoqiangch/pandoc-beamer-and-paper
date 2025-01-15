@@ -15,7 +15,18 @@
 YQ := yq
 PANDOC := pandoc
 LATEXMK := latexmk
+
+# 平台检测
+UNAME := $(shell uname)
+
+# Draw.io 路径配置
+ifeq ($(UNAME), Darwin)
 DRAWIO := /Applications/draw.io.app/Contents/MacOS/draw.io
+else ifeq ($(UNAME), Linux)
+DRAWIO := drawio
+else ifeq ($(UNAME), Windows_NT)
+DRAWIO := "C:\Program Files\draw.io\draw.io.exe"
+endif
 
 # 输入输出配置
 INPUT_MD ?= presentation.md
@@ -80,9 +91,15 @@ preprocess: init
 		exit 1; \
 	fi
 	@cp "$(INPUT_MD)" $(TEMP_FILE)
+ifeq ($(UNAME), Darwin)
 	@sed -i '' -E 's/!\[\[([^]]+)\]\]/![](\1)/g' $(TEMP_FILE)
 	@sed -i '' -E 's/!\[\]\(([^)]*\.svg)\)/![](\1)/g' $(TEMP_FILE)
 	@sed -i '' -E 's/%20/ /g' $(TEMP_FILE)
+else
+	@sed -i -E 's/!\[\[([^]]+)\]\]/![](\1)/g' $(TEMP_FILE)
+	@sed -i -E 's/!\[\]\(([^)]*\.svg)\)/![](\1)/g' $(TEMP_FILE)
+	@sed -i -E 's/%20/ /g' $(TEMP_FILE)
+endif
 
 # ====================
 # 4. 图片处理
@@ -112,7 +129,7 @@ convert_svg: copy_images
 		if [ -f "$$SVG_FILE" ]; then \
 			PNG_FILE="$${SVG_FILE%.svg}.png"; \
 			if [ "$(FORCE_REBUILD)" = "true" ] || [ ! -f "$$PNG_FILE" ]; then \
-				$(DRAWIO) -x -f png -o "$$PNG_FILE" "$$SVG_FILE"; \
+				"$(DRAWIO)" -x -f png -o "$$PNG_FILE" "$$SVG_FILE"; \
 			fi; \
 			sed -i '' -E "s|!\[\]\(([^)]*)$$(basename "$$SVG_FILE")\)|![](\1$$(basename "$$PNG_FILE"))|g" $(TEMP_FILE); \
 		fi; \
